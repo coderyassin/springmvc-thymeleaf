@@ -21,12 +21,7 @@ public class PatientController {
     }
 
     @GetMapping(path = "/index")
-    public String index() {
-        return "index";
-    }
-
-    @GetMapping(path = "/patients")
-    public String list(Model model,
+    public String patients(Model model,
                        @RequestParam(name = "page", defaultValue = "0", required = false) int page,
                        @RequestParam(name = "size", defaultValue = "4", required = false) int size,
                        @RequestParam(name = "keyword", defaultValue = "", required = false) String keyword) {
@@ -53,5 +48,13 @@ public class PatientController {
         model.addAttribute("totalPages", totalPages);
 
         return "patients";
+    }
+
+    @GetMapping("/delete")
+    public String delete(@RequestParam(name = "id") Long id,
+                         @RequestParam(name = "keyword") String keyword,
+                         @RequestParam(name = "page") int page) {
+        patientRepository.deleteById(id);
+        return "redirect:/patient/index?page="+page+"&keyword="+keyword;
     }
 }

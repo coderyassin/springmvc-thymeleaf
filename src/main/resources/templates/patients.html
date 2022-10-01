@@ -11,7 +11,7 @@
         <div class="card">
             <div class="card-header">Patient list</div>
             <div class="card-body">
-                <form method="get" th:action="@{patients}">
+                <form method="get" th:action="@{index}">
                     <div class="input-group rounded mt-3 mb-4 w-25">
                         <input type="search" class="form-control rounded" placeholder="Search" aria-label="Search"
                                aria-describedby="search-addon" name="keyword" th:value="${keyword}"/>
@@ -34,22 +34,27 @@
                         <td th:text="${patient.name}" />
                         <td th:text="${patient.dateOfBirth}" />
                         <td th:text="${patient.sick}" />
+                        <td>
+                            <a onclick="return confirm('Are you sure?')" class="btn btn-danger" th:href="@{delete(id=${patient.id}, keyword=${keyword}, page=${currentPage})}">
+                                Delete
+                            </a>
+                        </td>
                     </tr>
                 </table>
                 <nav aria-label="Page navigation example">
                     <ul class="pagination justify-content-end">
                         <li class="page-item" th:if="${currentPage > 0}">
-                            <a class="page-link" th:href="@{patients(page=${currentPage}-1, keyword=${keyword})}">Previous</a>
+                            <a class="page-link" th:href="@{index(page=${currentPage}-1, keyword=${keyword})}">Previous</a>
                         </li>
                         <li class="page-item"  th:each="page, status:${pages}">
-                            <a th:if="${status.index < 3}" th:class="${status.index==currentPage?'page-link active':'page-link'}" th:href="@{patients(page=${status.index}, keyword=${keyword})}" th:text="${status.index+1}"></a>
-                            <a th:if="${status.index > 2} and ${(status.index-1) < currentPage}" th:class="${status.index==currentPage?'page-link active':'page-link'}" th:href="@{patients(page=${status.index}, keyword=${keyword})}" th:text="${status.index+1}"></a>
+                            <a th:if="${status.index < 3}" th:class="${status.index==currentPage?'page-link active':'page-link'}" th:href="@{index(page=${status.index}, keyword=${keyword})}" th:text="${status.index+1}"></a>
+                            <a th:if="${status.index > 2} and ${(status.index-1) < currentPage}" th:class="${status.index==currentPage?'page-link active':'page-link'}" th:href="@{index(page=${status.index}, keyword=${keyword})}" th:text="${status.index+1}"></a>
                         </li>
                         <li class="page-item" th:if="${currentPage < (totalPages-1)}">
-                            <a class="page-link" th:href="@{patients(page=${currentPage}+1, keyword=${keyword})}">Next</a>
+                            <a class="page-link" th:href="@{index(page=${currentPage}+1, keyword=${keyword})}">Next</a>
                         </li>
                         <li class="page-item">
-                            <a class="page-link disabled" th:href="@{patients(page=${currentPage}+1)}">Page
+                            <a class="page-link disabled" th:href="@{index(page=${currentPage}+1)}">Page
                                 <span th:text="${currentPage}+1"></span>/<span th:text="${totalPages}"></span>
                             </a>
                         </li>
