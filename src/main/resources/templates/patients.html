@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" type="text/css" href="/webjars/bootstrap/5.2.0/css/bootstrap.css">
+    <link rel="stylesheet" type="text/css" href="/webjars/font-awesome/6.2.0/css/all.css">
+</head>
+<body>
+    <div class="container mt-5">
+        <div class="card">
+            <div class="card-header">Patient list</div>
+            <div class="card-body">
+                <form method="get" th:action="@{patients}">
+                    <div class="input-group rounded mt-3 mb-4 w-25">
+                        <input type="search" class="form-control rounded" placeholder="Search" aria-label="Search"
+                               aria-describedby="search-addon" name="keyword" th:value="${keyword}"/>
+                        <button type="submit" class="btn btn-outline-success">
+                            <span class="input-group-text border-0" id="search-addon">
+                            <i class="fas fa-search"></i>
+                        </span>
+                        </button>
+                    </div>
+                </form>
+                <table class="table">
+                    <tr>
+                        <th>Id</th>
+                        <th>Name</th>
+                        <th>Date of birth</th>
+                        <th>Sick</th>
+                    </tr>
+                    <tr th:each="patient: ${patients}">
+                        <td th:text="${patient.id}" />
+                        <td th:text="${patient.name}" />
+                        <td th:text="${patient.dateOfBirth}" />
+                        <td th:text="${patient.sick}" />
+                    </tr>
+                </table>
+                <nav aria-label="Page navigation example">
+                    <ul class="pagination justify-content-end">
+                        <li class="page-item" th:if="${currentPage > 0}">
+                            <a class="page-link" th:href="@{patients(page=${currentPage}-1, keyword=${keyword})}">Previous</a>
+                        </li>
+                        <li class="page-item"  th:each="page, status:${pages}">
+                            <a th:if="${status.index < 3}" th:class="${status.index==currentPage?'page-link active':'page-link'}" th:href="@{patients(page=${status.index}, keyword=${keyword})}" th:text="${status.index+1}"></a>
+                            <a th:if="${status.index > 2} and ${(status.index-1) < currentPage}" th:class="${status.index==currentPage?'page-link active':'page-link'}" th:href="@{patients(page=${status.index}, keyword=${keyword})}" th:text="${status.index+1}"></a>
+                        </li>
+                        <li class="page-item" th:if="${currentPage < (totalPages-1)}">
+                            <a class="page-link" th:href="@{patients(page=${currentPage}+1, keyword=${keyword})}">Next</a>
+                        </li>
+                        <li class="page-item">
+                            <a class="page-link disabled" th:href="@{patients(page=${currentPage}+1)}">Page
+                                <span th:text="${currentPage}+1"></span>/<span th:text="${totalPages}"></span>
+                            </a>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </div>
+
+
+</body>
+</html>

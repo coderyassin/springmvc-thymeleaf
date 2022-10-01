@@ -1,0 +1,18 @@
+server.port: 8068
+# JDBC properties
+spring:
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    url: jdbc:postgresql://localhost:5432/patient-management
+    username: postgres
+    password: YassMel97
+
+  # Hibernate options
+  jpa:
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQL91Dialect
+        hbm2ddl:
+          auto: update
+        globally_quoted_identifiers: true
+    show-sql: true
