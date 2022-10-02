@@ -57,4 +57,5 @@ public class PatientController {
         patientRepository.deleteById(id);
         return "redirect:/patient/index?page="+page+"&keyword="+keyword;
     }
+
 }
