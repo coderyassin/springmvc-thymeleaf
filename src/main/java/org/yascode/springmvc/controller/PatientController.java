@@ -4,11 +4,12 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.*;
 import org.yascode.springmvc.dao.PatientRepository;
 import org.yascode.springmvc.entities.Patient;
+
+import javax.validation.Valid;
 
 @Controller
 @RequestMapping(path = "/patient")
@@ -56,6 +57,21 @@ public class PatientController {
                          @RequestParam(name = "page") int page) {
         patientRepository.deleteById(id);
         return "redirect:/patient/index?page="+page+"&keyword="+keyword;
+    }
+
+    @GetMapping(path = "/formPatient")
+    public String formPatient(Model model) {
+        model.addAttribute("patient", new Patient());
+        return "formPatient.html";
+    }
+
+    @PostMapping(path = "/savePatient")
+    public String savePatient(@Valid Patient patient, BindingResult bindingResult) {
+        if (bindingResult.hasErrors())
+            return "formPatient";
+
+        patientRepository.save(patient);
+        return "formPatient";
     }
 
 }
