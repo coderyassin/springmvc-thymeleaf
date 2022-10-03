@@ -5,7 +5,10 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.yascode.springmvc.dao.PatientRepository;
 import org.yascode.springmvc.entities.Patient;
 
@@ -66,11 +69,19 @@ public class PatientController {
     }
 
     @PostMapping(path = "/savePatient")
-    public String savePatient(@Valid Patient patient, BindingResult bindingResult) {
+    public String savePatient(@Valid Patient patient, BindingResult bindingResult, Model model) {
         if (bindingResult.hasErrors())
             return "formPatient";
 
-        patientRepository.save(patient);
+        Patient save = patientRepository.save(patient);
+        model.addAttribute("patient", patient);
+        return "confirmation";
+    }
+
+    @GetMapping("/update")
+    public String update(@RequestParam(name = "id") Long id, Model model) {
+        Patient patient = patientRepository.findById(id).get();
+        model.addAttribute("patient", patient);
         return "formPatient";
     }
 

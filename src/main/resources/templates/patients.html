@@ -36,6 +36,11 @@
                             <td th:text="${patient.dateOfBirth}" />
                             <td th:text="${patient.sick}" />
                             <td>
+                                <a class="btn btn-success" th:href="@{update(id=${patient.id}, keyword=${keyword}, page=${currentPage})}">
+                                    Update
+                                </a>
+                            </td>
+                            <td>
                                 <a onclick="return confirm('Are you sure?')" class="btn btn-danger" th:href="@{delete(id=${patient.id}, keyword=${keyword}, page=${currentPage})}">
                                     Delete
                                 </a>
